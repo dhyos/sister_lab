@@ -17,6 +17,12 @@
                 </a>
                 
                 <a href="{{ url('/') }}#barang" class="text-gray-600 hover:text-utm-primary font-medium transition">Peminjaman Barang</a>
+
+                @auth
+                    <a href="{{ route('peminjaman.riwayat') }}" class="{{ request()->routeIs('peminjaman.riwayat*') ? 'text-utm-primary font-bold border-b-2 border-utm-primary' : 'text-gray-600 hover:text-utm-primary font-medium' }} transition h-full flex items-center">
+                        Riwayat
+                    </a>
+                @endauth
             </div>
 
             <div class="flex items-center gap-3" x-data="{ open: false }">
@@ -32,15 +38,30 @@
                         
                         <div x-cloak x-show="open" 
                              x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100"
-                             class="absolute right-0 z-50 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-1 origin-top-right">
+                             class="absolute right-0 z-50 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-1 origin-top-right">
+                            
                             <div class="px-4 py-3 border-b border-gray-100 bg-gray-50/50 rounded-t-xl">
                                 <p class="text-xs text-gray-500">Login sebagai</p>
                                 <p class="text-sm font-bold text-gray-900 truncate">{{ Auth::user()->email }}</p>
                             </div>
-                            <a href="{{ route('dashboard') }}" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50">Dashboard</a>
+
+                            <a href="{{ route('dashboard') }}" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 flex items-center gap-2">
+                                <i class="bi bi-speedometer2 text-gray-400"></i> Dashboard
+                            </a>
+                            
+                            <a href="{{ route('peminjaman.riwayat') }}" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 flex items-center gap-2">
+                                <i class="bi bi-clock-history text-gray-400"></i> Riwayat Peminjaman
+                            </a>
+
+                            <a href="{{ route('profile.edit') }}" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 flex items-center gap-2">
+                                <i class="bi bi-person-gear text-gray-400"></i> Edit Profil
+                            </a>
+
                             <form method="POST" action="{{ route('logout') }}" class="border-t border-gray-100">
                                 @csrf
-                                <button type="submit" class="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-b-xl">Keluar</button>
+                                <button type="submit" class="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-b-xl flex items-center gap-2">
+                                    <i class="bi bi-box-arrow-right"></i> Keluar
+                                </button>
                             </form>
                         </div>
                     </div>
