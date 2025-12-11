@@ -1,6 +1,5 @@
 <?php
 
-// database/migrations/xxxx_xx_xx_xxxxxx_create_jadwal_lab_table.php
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,17 +10,26 @@ return new class extends Migration
     {
         Schema::create('jadwal_lab', function (Blueprint $table) {
             $table->id();
-            // Relasi ke tabel lab
-            $table->foreignId('lab_id')->constrained('lab', 'id_lab')->onDelete('cascade');
+            
+            // Foreign key ke lab (gunakan id_lab sebagai kolom tujuan)
+            $table->foreignId('lab_id')
+                  ->constrained('lab', 'id_lab')
+                  ->onDelete('cascade');
             
             $table->date('tanggal');
             $table->time('jam_mulai');
             $table->time('jam_selesai');
-            $table->enum('status', ['matakuliah', 'terpakai', 'dipesan'])->default('terpakai');
-            $table->string('kegiatan');
+            
+            // PENTING: Tambahkan 'tersedia' di enum!
+            $table->enum('status', ['tersedia', 'terpakai', 'dipesan', 'matakuliah'])
+                  ->default('tersedia');
+            
+            $table->string('kegiatan')->nullable();
+            $table->string('pengisi')->nullable();
+            
             $table->timestamps();
             
-            // Indexing untuk performa Read (Arsitektur Terdistribusi)
+            // Index untuk performa
             $table->index(['tanggal', 'status']);
         });
     }

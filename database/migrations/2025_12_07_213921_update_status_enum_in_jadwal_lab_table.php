@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -12,11 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Menggunakan Raw SQL karena Doctrine DBAL (bawaan Laravel) 
-        // kadang bermasalah mengubah kolom ENUM secara langsung.
-
-        // Kita ubah definisi kolom status untuk menyertakan 'matakuliah'
-        DB::statement("ALTER TABLE jadwal_lab MODIFY COLUMN status ENUM( 'terpakai', 'dipesan', 'matakuliah') NOT NULL DEFAULT 'dipesan'");
+        // SQLite tidak support MODIFY COLUMN
+        // Jadi kita skip atau drop & recreate table
+        
+        // OPSI 1: Skip (karena kolom status sudah dibuat di migration sebelumnya)
+        // Tidak perlu lakukan apa-apa
+        
+        // OPSI 2: Jika benar-benar perlu update, drop & recreate
+        // Schema::table('jadwal_lab', function (Blueprint $table) {
+        //     $table->dropColumn('status');
+        // });
+        
+        // Schema::table('jadwal_lab', function (Blueprint $table) {
+        //     $table->enum('status', ['terpakai', 'dipesan', 'matakuliah', 'tersedia'])
+        //           ->default('dipesan')
+        //           ->after('jam_selesai');
+        // });
     }
 
     /**
@@ -24,8 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Kembalikan ke opsi semula jika di-rollback
-        // PERINGATAN: Data dengan status 'matakuliah' mungkin akan error atau hilang
-        DB::statement("ALTER TABLE jadwal_lab MODIFY COLUMN status ENUM('tersedia', 'terpakai', 'dipesan') NOT NULL DEFAULT 'tersedia'");
+        // Rollback juga skip untuk SQLite
     }
 };
