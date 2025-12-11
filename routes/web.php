@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminLabController;  // Controller Admin
 use App\Http\Controllers\PublicLabController; // Controller Public
+use App\Http\Controllers\BarangController; // Controller Public
 use App\Models\Lab;
 use Illuminate\Support\Facades\Route;
 
@@ -66,7 +67,20 @@ Route::middleware('auth')->group(function () {
         Route::post('/{id}/update-status', [AdminLabController::class, 'updateStatus'])->name('admin.lab.updateStatus');
     });
 
+    Route::prefix('admin/barang')->group(function(){
+        Route::get('/', [BarangController::class, 'index'])->name('barang.index');
+        Route::get('/barang', [BarangController::class, 'index'])->name('barang.all');
+        Route::get('/create', [BarangController::class, 'create'])->name('create.view');
+        Route::post('layananan_penyimpanan', [BarangController::class, 'storeadd'])->name('create.store');
+        Route::get('/layanan_penyimpanan/{id}/edit', [BarangController::class, 'edit'])->name('barang.edit');
+        Route::put('/layanan_penyimpanan/{id}', [BarangController::class, 'update'])->name('barang.update');
+        Route::delete('/layanan_penyimpanan/{id}', [BarangController::class, 'destroy'])->name('barang.destroy');
+    });
+        
+
 });
+
+
 
 // Memuat route autentikasi (Login, Register, dll)
 require __DIR__.'/auth.php';
