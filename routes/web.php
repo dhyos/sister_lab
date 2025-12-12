@@ -36,6 +36,10 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+    Route::get('/health', function () {
+    return response()->json(['status' => 'ok']);
+});
+
 Route::middleware('auth')->group(function () {
     
     // --- 1. Fitur Peminjaman (User/Mahasiswa) ---
@@ -77,7 +81,6 @@ Route::middleware('auth')->group(function () {
         Route::put('/layanan_penyimpanan/{id}', [BarangController::class, 'update'])->name('barang.update');
         Route::delete('/layanan_penyimpanan/{id}', [BarangController::class, 'destroy'])->name('barang.destroy');
     });
-        
 
 });
 
