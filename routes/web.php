@@ -66,9 +66,10 @@ Route::middleware('auth')->group(function () {
 
     // --- 3. Fitur Admin Kelola Lab ---
     Route::prefix('admin/lab')->group(function () {
-        Route::get('/', [AdminLabController::class, 'index'])->name('admin.lab.index');
-        Route::get('/{id}', [AdminLabController::class, 'show'])->name('admin.lab.show');
+        Route::get('/', [AdminLabController::class, 'index'])->name('admin.lab.index');   
+        Route::get('/{id}', [AdminLabController::class, 'show'])->name('admin.lab.show'); 
         Route::post('/{id}/update-status', [AdminLabController::class, 'updateStatus'])->name('admin.lab.updateStatus');
+        Route::get('/{id}/download-surat', [AdminLabController::class, 'downloadSurat'])->name('admin.lab.downloadSurat'); // ← Tambahkan ini jika belum ada
     });
 
     Route::prefix('admin/barang')->group(function(){

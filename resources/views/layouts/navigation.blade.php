@@ -22,6 +22,13 @@
                     <a href="{{ route('peminjaman.riwayat') }}" class="{{ request()->routeIs('peminjaman.riwayat*') ? 'text-utm-primary font-bold border-b-2 border-utm-primary' : 'text-gray-600 hover:text-utm-primary font-medium' }} transition h-full flex items-center">
                         Riwayat
                     </a>
+
+                    {{-- Menu Admin --}}
+                    @if(Auth::user()->role === 'admin')
+                        <a href="{{ route('admin.lab.index') }}" class="{{ request()->routeIs('admin.lab.*') ? 'text-utm-primary font-bold border-b-2 border-utm-primary' : 'text-gray-600 hover:text-utm-primary font-medium' }} transition h-full flex items-center">
+                            Admin Lab
+                        </a>
+                    @endif
                 @endauth
             </div>
 
@@ -43,17 +50,30 @@
                             <div class="px-4 py-3 border-b border-gray-100 bg-gray-50/50 rounded-t-xl">
                                 <p class="text-xs text-gray-500">Login sebagai</p>
                                 <p class="text-sm font-bold text-gray-900 truncate">{{ Auth::user()->email }}</p>
+                                @if(Auth::user()->role === 'admin')
+                                    <p class="text-xs text-green-600 font-semibold mt-1">Administrator</p>
+                                @endif
                             </div>
 
-                            <a href="{{ route('dashboard') }}" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 flex items-center gap-2">
+                            <a href="{{ route('dashboard') }}" class="px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 flex items-center gap-2">
                                 <i class="bi bi-speedometer2 text-gray-400"></i> Dashboard
                             </a>
                             
-                            <a href="{{ route('peminjaman.riwayat') }}" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 flex items-center gap-2">
+                            <a href="{{ route('peminjaman.riwayat') }}" class="px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 flex items-center gap-2">
                                 <i class="bi bi-clock-history text-gray-400"></i> Riwayat Peminjaman
                             </a>
 
-                            <a href="{{ route('profile.edit') }}" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 flex items-center gap-2">
+                            {{-- Menu Admin di Dropdown --}}
+                            @if(Auth::user()->role === 'admin')
+                                <div class="border-t border-gray-100 mt-1 pt-1">
+                                    <p class="px-4 py-1.5 text-xs font-semibold text-gray-400 uppercase">Admin Menu</p>
+                                    <a href="{{ route('admin.lab.index') }}" class="px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 flex items-center gap-2">
+                                        <i class="bi bi-folder-check text-gray-400"></i> Kelola Pengajuan Lab
+                                    </a>
+                                </div>
+                            @endif
+
+                            <a href="{{ route('profile.edit') }}" class="px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 flex items-center gap-2 border-t border-gray-100 mt-1">
                                 <i class="bi bi-person-gear text-gray-400"></i> Edit Profil
                             </a>
 
